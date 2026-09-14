@@ -15,4 +15,13 @@ export const companies = pgTable('companies', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
+export const users = pgTable('users', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  workspaceId: uuid('workspace_id').references(() => workspaces.id).notNull(),
+  email: text('email').notNull().unique(),
+  passwordHash: text('password_hash').notNull(),
+  role: text('role').notNull().default('member'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
 // Note: Postgres Row Level Security (RLS) policies will be enforced via custom migrations
